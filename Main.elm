@@ -4,10 +4,21 @@ import Html exposing (beginnerProgram, Html, text)
 import Material.Table exposing (..)
 
 
+-- TYPES
+
+
+type alias Row =
+    { material : String
+    , quantity : String
+    , unitPrice : String
+    }
+
+
+
 -- MODEL
 
 
-model : List { material : String, quantity : String, unitPrice : String }
+model : List Row
 model =
     [ { material = "Acrylic (Transparent)", quantity = "25", unitPrice = "$2.90" }
     , { material = "Plywood (Birch)", quantity = "50", unitPrice = "$1.25" }
