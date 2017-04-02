@@ -1,36 +1,52 @@
 module Main exposing (..)
 
-import Html exposing (..)
+import Html exposing (beginnerProgram, Html, text)
+import Material.Table exposing (..)
 
 
 -- MODEL
--- VIEW
-view =
-  Table.table []
-[ Table.thead []
-  [ Table.tr []
-    [ Table.th [] [ text "Material" ]
-    , Table.th [ ] [ text "Quantity" ]
-    , Table.th [ ] [ text "Unit Price" ]
+
+
+model : List { material : String, quantity : String, unitPrice : String }
+model =
+    [ { material = "Acrylic (Transparent)", quantity = "25", unitPrice = "$2.90" }
+    , { material = "Plywood (Birch)", quantity = "50", unitPrice = "$1.25" }
+    , { material = "Laminate (Gold on Blue)", quantity = "10", unitPrice = "$2.35" }
     ]
-  ]
-, Table.tbody []
-    (data |> List.map (\item ->
-       Table.tr []
-         [ Table.td [] [ text item.material ]
-         , Table.td [ Table.numeric ] [ text item.quantity ]
-         , Table.td [ Table.numeric ] [ text item.unitPrice ]
-         ]
-       )
-    )
-]
+
+
+
+-- VIEW
+
+
+view : Html msg
+view =
+    table []
+        [ thead []
+            [ tr []
+                [ th [] [ text "Material" ]
+                , th [] [ text "Quantity" ]
+                , th [] [ text "Unit Price" ]
+                ]
+            ]
+        , tbody []
+            (model
+                |> List.map
+                    (\item ->
+                        tr []
+                            [ td [] [ text item.material ]
+                            , td [ numeric ] [ text item.quantity ]
+                            , td [ numeric ] [ text item.unitPrice ]
+                            ]
+                    )
+            )
+        ]
+
+
+
 -- UPDATE
 
 
 main : Html msg
 main =
-    beginnerProgram
-        { model = model
-        , view = view
-        , update = update
-        }
+    view
