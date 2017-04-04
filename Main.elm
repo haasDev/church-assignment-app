@@ -1,5 +1,6 @@
 module Main exposing (..)
 
+import Date exposing (..)
 import Html exposing (beginnerProgram, div, Html, node, text)
 import Html.Attributes exposing (..)
 import Material.Table exposing (..)
@@ -9,9 +10,9 @@ import Material.Table exposing (..)
 
 
 type alias Row =
-    { material : String
-    , quantity : String
-    , unitPrice : String
+    { name : String
+    , assignment : String
+    , followUpDate : String
     }
 
 
@@ -21,9 +22,9 @@ type alias Row =
 
 model : List Row
 model =
-    [ { material = "Acrylic (Transparent)", quantity = "26", unitPrice = "$2.90" }
-    , { material = "Plywood (Birch)", quantity = "50", unitPrice = "$1.25" }
-    , { material = "Laminate (Gold on Blue)", quantity = "10", unitPrice = "$2.35" }
+    [ { name = "Reckia, Jackson", assignment = "Write your plans to have meaningful prayer and scripture study", followUpDate = "05/01/2017" }
+    , { name = "Reckia, Jackson", assignment = "Write your plans to have meaningful prayer and scripture study", followUpDate = "05/01/2017" }
+    , { name = "Reckia, Jackson", assignment = "Write your plans to have meaningful prayer and scripture study", followUpDate = "05/01/2017" }
     ]
 
 
@@ -49,9 +50,9 @@ view =
         , table []
             [ thead []
                 [ tr []
-                    [ th [] [ text "Material" ]
-                    , th [] [ text "Quantity" ]
-                    , th [] [ text "Unit Price" ]
+                    [ th [] [ text "Name" ]
+                    , th [] [ text "Assignment" ]
+                    , th [] [ text "Follow-up Date" ]
                     ]
                 ]
             , tbody []
@@ -59,9 +60,9 @@ view =
                     |> List.map
                         (\item ->
                             tr []
-                                [ td [] [ text item.material ]
-                                , td [ numeric ] [ text item.quantity ]
-                                , td [ numeric ] [ text item.unitPrice ]
+                                [ td [] [ text item.name ]
+                                , td [] [ text item.assignment ]
+                                , td [] [ text item.followUpDate ]
                                 ]
                         )
                 )
