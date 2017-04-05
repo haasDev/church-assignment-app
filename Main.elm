@@ -4,9 +4,9 @@ import Date exposing (..)
 import DateTimePicker exposing (..)
 import Html exposing (program, div, Html, node, text)
 import Html.Attributes exposing (..)
+import Material.Table exposing (..)
 
 
---import Material.Table exposing (..)
 -- TYPES
 
 
@@ -88,29 +88,28 @@ view row =
             []
             row.followUpDate.state
             row.followUpDate.value
-
-        {-
-           , table []
-               [ thead []
-                   [ tr []
-                       [ th [] [ text "Name" ]
-                       , th [] [ text "Assignment" ]
-                       , th [] [ text "Follow-up Date" ]
-                       ]
-                   ]
-               , tbody []
-                   (model
-                       |> List.map
-                           (\item ->
-                               tr []
-                                   [ td [] [ text item.name ]
-                                   , td [] [ text item.assignment ]
-                                   , td [] [ text item.followUpDate ]
-                                   ]
-                           )
-                   )
-               ]
-        -}
+        , table []
+            [ thead []
+                [ tr []
+                    [ th [] [ text "Name" ]
+                    , th [] [ text "Assignment" ]
+                    , th [] [ text "Follow-up Date" ]
+                    ]
+                ]
+            , tbody []
+                [ tr
+                    []
+                    [ td [] [ text row.name ]
+                    , td [] [ text row.assignment ]
+                    , td []
+                        [ text
+                            (toString
+                                row.followUpDate.value
+                            )
+                        ]
+                    ]
+                ]
+            ]
         ]
 
 
