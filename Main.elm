@@ -49,6 +49,7 @@ init =
     )
 
 
+update : Msg -> List Row -> ( List Row, Cmd Msg )
 update msg rows =
     case msg of
         DateChanged state date ->
@@ -134,6 +135,7 @@ view rows =
 -- UPDATE
 
 
+main : Program Never (List Row) Msg
 main =
     program
         { init = init
