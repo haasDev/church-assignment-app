@@ -40,7 +40,7 @@ init =
         , assignment = "Write your plans to have meaningful prayer and scripture study"
         , followUpDate = initialFollowUpDate
         }
-      , { name = "Jacob, Shepherd"
+      , { name = "Shepherd, Jacob"
         , assignment = "Shadow someone in your desired occupation"
         , followUpDate = initialFollowUpDate
         }
