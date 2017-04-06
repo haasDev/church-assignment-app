@@ -74,8 +74,8 @@ update msg rows =
 -- VIEW
 
 
-view : Row -> Html Msg
-view row =
+view : List Row -> Html Msg
+view rows =
     div [ style [ ( "margin", "50px auto" ), ( "max-width", "50%" ) ] ]
         [ node "link"
             [ rel "stylesheet"
@@ -92,8 +92,20 @@ view row =
         , DateTimePicker.datePicker
             DateChanged
             []
-            row.followUpDate.state
-            row.followUpDate.value
+            (case List.head rows of
+                Nothing ->
+                    initialFollowUpDate.state
+
+                Just val ->
+                    val.followUpDate.state
+            )
+            (case List.head rows of
+                Nothing ->
+                    initialFollowUpDate.value
+
+                Just val ->
+                    val.followUpDate.value
+            )
         , table []
             [ thead []
                 [ tr []
@@ -103,13 +115,17 @@ view row =
                     ]
                 ]
             , tbody []
-                [ tr
-                    []
-                    [ td [] [ text row.name ]
-                    , td [] [ text row.assignment ]
-                    , td [] [ text <| toString row.followUpDate.value ]
-                    ]
-                ]
+                (List.map
+                    (\row ->
+                        tr
+                            []
+                            [ td [] [ text row.name ]
+                            , td [] [ text row.assignment ]
+                            , td [] [ text <| toString row.followUpDate.value ]
+                            ]
+                    )
+                    rows
+                )
             ]
         ]
 
