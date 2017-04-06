@@ -34,34 +34,40 @@ initialFollowUpDate =
     { value = Nothing, state = DateTimePicker.initialState }
 
 
-init : ( Row, Cmd Msg )
+init : ( List Row, Cmd Msg )
 init =
-    ( { name = "Reckia, Jackson"
-      , assignment = "Write your plans to have meaningful prayer and scripture study"
-      , followUpDate = initialFollowUpDate
-      }
+    ( [ { name = "Reckia, Jackson"
+        , assignment = "Write your plans to have meaningful prayer and scripture study"
+        , followUpDate = initialFollowUpDate
+        }
+      , { name = "Jacob, Shepherd"
+        , assignment = "Shadow someone in your desired occupation"
+        , followUpDate = initialFollowUpDate
+        }
+      ]
     , DateTimePicker.initialCmd DateChanged DateTimePicker.initialState
     )
 
 
-update : Msg -> Row -> ( Row, Cmd Msg )
-update msg row =
+update msg rows =
     case msg of
         DateChanged state date ->
             let
-                followUpDate =
-                    row.followUpDate
+                newRows =
+                    List.map
+                        (\row ->
+                            { row
+                                | followUpDate =
+                                    { value =
+                                        date
+                                    , state =
+                                        state
+                                    }
+                            }
+                        )
+                        rows
             in
-                ( { row
-                    | followUpDate =
-                        { followUpDate
-                            | value = date
-                            , state =
-                                state
-                        }
-                  }
-                , Cmd.none
-                )
+                ( newRows, Cmd.none )
 
 
 
@@ -112,7 +118,6 @@ view row =
 -- UPDATE
 
 
-main : Program Never Row Msg
 main =
     program
         { init = init
