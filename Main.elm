@@ -13,7 +13,7 @@ import Material.Table exposing (..)
 type alias Row =
     { name : String
     , assignment : String
-    , followUpDate : { value : Maybe Date, state : DateTimePicker.State }
+    , followUpDate : { value : Maybe Date, state : State }
     }
 
 
@@ -26,7 +26,7 @@ type alias State =
 
 
 type Msg
-    = DateChanged DateTimePicker.State (Maybe Date)
+    = DateChanged State (Maybe Date)
 
 
 
