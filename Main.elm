@@ -17,6 +17,10 @@ type alias Row =
     }
 
 
+type alias State =
+    DateTimePicker.State
+
+
 
 -- MSG
 
@@ -49,24 +53,23 @@ init =
     )
 
 
+displayRow : State -> Maybe Date -> Row -> Row
+displayRow state date row =
+    { row
+        | followUpDate =
+            { value = date
+            , state = state
+            }
+    }
+
+
 update : Msg -> List Row -> ( List Row, Cmd Msg )
 update msg rows =
     case msg of
         DateChanged state date ->
             let
                 newRows =
-                    List.map
-                        (\row ->
-                            { row
-                                | followUpDate =
-                                    { value =
-                                        date
-                                    , state =
-                                        state
-                                    }
-                            }
-                        )
-                        rows
+                    List.map (displayRow state date) rows
             in
                 ( newRows, Cmd.none )
 
