@@ -41,7 +41,8 @@ initialFollowUpDate =
 init : ( List Row, Cmd Msg )
 init =
     ( [ { name = "Reckia, Jackson"
-        , assignment = "Write your plans to have meaningful prayer and scripture study"
+        , assignment =
+            "Write your plans to have meaningful prayer and scripture study"
         , followUpDate = initialFollowUpDate
         }
       , { name = "Shepherd, Jacob"
