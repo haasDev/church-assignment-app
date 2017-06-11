@@ -126,7 +126,7 @@ view rows =
                             []
                             [ td [] [ text row.name ]
                             , td [] [ text row.assignment ]
-                            , td [] [ text <| toString row.followUpDate.value ]
+                            , td [] [ text (toString row.followUpDate.value) ]
                             ]
                     )
                     rows
