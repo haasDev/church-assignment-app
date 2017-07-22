@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Date exposing (..)
 import DateTimePicker exposing (..)
-import Html exposing (program, div, Html, node, text)
+import Html exposing (Html, div, node, program, text)
 import Html.Attributes exposing (..)
 import Material.Table exposing (..)
 
@@ -72,7 +72,7 @@ update msg rows =
                 newRows =
                     List.map (displayRow state date) rows
             in
-                ( newRows, Cmd.none )
+            ( newRows, Cmd.none )
 
 
 
