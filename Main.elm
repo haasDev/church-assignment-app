@@ -11,9 +11,9 @@ import Material.Table exposing (..)
 
 
 type alias Row =
-    { name : String
-    , assignment : String
+    { assignment : String
     , followUpDate : { value : Maybe Date, state : State }
+    , name : String
     }
 
 
