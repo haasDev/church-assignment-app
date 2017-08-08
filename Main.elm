@@ -4,7 +4,7 @@ import Css
 import Date exposing (..)
 import DateTimePicker exposing (..)
 import DateTimePicker.Css
-import Html exposing (Html, div, node, program, text)
+import Html exposing (Html, button, div, node, program, text)
 import Html.Attributes exposing (..)
 import Material.Table exposing (..)
 
@@ -102,6 +102,9 @@ view rows =
     in
     div []
         [ Html.node "style" [] [ Html.text css ]
+        , div []
+            [ button [] [ text "+" ]
+            ]
         , div
             [ style [ ( "margin", "50px auto" ), ( "max-width", "50%" ) ] ]
             [ table []
