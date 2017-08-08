@@ -42,11 +42,11 @@ init : ( List Row, Cmd Msg )
 init =
     ( [ { name = "Reckia, Jackson"
         , assignment =
-            "Write your plans to have meaningful prayer and scripture study"
+            "Jacksons first assignment"
         , followUpDate = initialFollowUpDate
         }
       , { name = "Shepherd, Jacob"
-        , assignment = "Shadow someone in your desired occupation"
+        , assignment = "Jacob's first assignment"
         , followUpDate = initialFollowUpDate
         }
       ]
@@ -62,6 +62,10 @@ displayRow state date row =
             , state = state
             }
     }
+
+
+
+-- UPDATE
 
 
 update : Msg -> List Row -> ( List Row, Cmd Msg )
@@ -82,36 +86,7 @@ update msg rows =
 view : List Row -> Html Msg
 view rows =
     div [ style [ ( "margin", "50px auto" ), ( "max-width", "50%" ) ] ]
-        [ node "link"
-            [ rel "stylesheet"
-            , href
-                "https://fonts.googleapis.com/icon?family=Material+Icons"
-            ]
-            []
-        , node "link"
-            [ rel "stylesheet"
-            , href
-                "https://code.getmdl.io/1.3.0/material.indigo-pink.min.css"
-            ]
-            []
-        , DateTimePicker.datePicker
-            DateChanged
-            []
-            (case List.head rows of
-                Nothing ->
-                    initialFollowUpDate.state
-
-                Just val ->
-                    val.followUpDate.state
-            )
-            (case List.head rows of
-                Nothing ->
-                    initialFollowUpDate.value
-
-                Just val ->
-                    val.followUpDate.value
-            )
-        , table []
+        [ table []
             [ thead []
                 [ tr []
                     [ th [] [ text "Name" ]
@@ -126,17 +101,30 @@ view rows =
                             []
                             [ td [] [ text row.name ]
                             , td [] [ text row.assignment ]
-                            , td [] [ text (toString row.followUpDate.value) ]
+                            , td []
+                                [ DateTimePicker.datePicker DateChanged
+                                    []
+                                    (case List.head rows of
+                                        Nothing ->
+                                            initialFollowUpDate.state
+
+                                        Just val ->
+                                            val.followUpDate.state
+                                    )
+                                    (case List.head rows of
+                                        Nothing ->
+                                            initialFollowUpDate.value
+
+                                        Just val ->
+                                            val.followUpDate.value
+                                    )
+                                ]
                             ]
                     )
                     rows
                 )
             ]
         ]
-
-
-
--- UPDATE
 
 
 main : Program Never (List Row) Msg
