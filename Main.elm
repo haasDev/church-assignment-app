@@ -1,7 +1,9 @@
 module Main exposing (..)
 
+import Css
 import Date exposing (..)
 import DateTimePicker exposing (..)
+import DateTimePicker.Css
 import Html exposing (Html, div, node, program, text)
 import Html.Attributes exposing (..)
 import Material.Table exposing (..)
@@ -12,6 +14,7 @@ import Material.Table exposing (..)
 
 type alias Row =
     { assignment : String
+    , id : Int
     , followUpDate : { value : Maybe Date, state : State }
     , name : String
     }
@@ -26,7 +29,7 @@ type alias State =
 
 
 type Msg
-    = DateChanged State (Maybe Date)
+    = DateChanged Int State (Maybe Date)
 
 
 
@@ -40,28 +43,36 @@ initialFollowUpDate =
 
 init : ( List Row, Cmd Msg )
 init =
-    ( [ { name = "Reckia, Jackson"
+    ( [ { id = 1
+        , name = "Reckia, Jackson"
         , assignment =
             "Jacksons first assignment"
         , followUpDate = initialFollowUpDate
         }
-      , { name = "Shepherd, Jacob"
+      , { id = 2
+        , name = "Shepherd, Jacob"
         , assignment = "Jacob's first assignment"
         , followUpDate = initialFollowUpDate
         }
       ]
-    , DateTimePicker.initialCmd DateChanged DateTimePicker.initialState
+    , Cmd.batch
+        [ DateTimePicker.initialCmd (DateChanged 1) DateTimePicker.initialState
+        , DateTimePicker.initialCmd (DateChanged 2) DateTimePicker.initialState
+        ]
     )
 
 
-displayRow : State -> Maybe Date -> Row -> Row
-displayRow state date row =
-    { row
-        | followUpDate =
-            { value = date
-            , state = state
-            }
-    }
+displayRow : Int -> State -> Maybe Date -> Row -> Row
+displayRow id state date row =
+    if row.id == id then
+        { row
+            | followUpDate =
+                { value = date
+                , state = state
+                }
+        }
+    else
+        row
 
 
 
@@ -71,10 +82,10 @@ displayRow state date row =
 update : Msg -> List Row -> ( List Row, Cmd Msg )
 update msg rows =
     case msg of
-        DateChanged state date ->
+        DateChanged id state date ->
             let
                 newRows =
-                    List.map (displayRow state date) rows
+                    List.map (displayRow id state date) rows
             in
             ( newRows, Cmd.none )
 
@@ -85,46 +96,45 @@ update msg rows =
 
 view : List Row -> Html Msg
 view rows =
-    div [ style [ ( "margin", "50px auto" ), ( "max-width", "50%" ) ] ]
-        [ table []
-            [ thead []
-                [ tr []
-                    [ th [] [ text "Name" ]
-                    , th [] [ text "Assignment" ]
-                    , th [] [ text "Follow-up Date" ]
+    let
+        { css } =
+            Css.compile [ DateTimePicker.Css.css ]
+    in
+    div []
+        [ Html.node "style" [] [ Html.text css ]
+        , div
+            [ style [ ( "margin", "50px auto" ), ( "max-width", "50%" ) ] ]
+            [ table []
+                [ thead []
+                    [ tr []
+                        [ th [] [ text "Name" ]
+                        , th [] [ text "Assignment" ]
+                        , th [] [ text "Follow-up Date" ]
+                        ]
                     ]
+                , tbody [] (List.map getRow rows)
                 ]
-            , tbody []
-                (List.map
-                    (\row ->
-                        tr
-                            []
-                            [ td [] [ text row.name ]
-                            , td [] [ text row.assignment ]
-                            , td []
-                                [ DateTimePicker.datePicker DateChanged
-                                    []
-                                    (case List.head rows of
-                                        Nothing ->
-                                            initialFollowUpDate.state
-
-                                        Just val ->
-                                            val.followUpDate.state
-                                    )
-                                    (case List.head rows of
-                                        Nothing ->
-                                            initialFollowUpDate.value
-
-                                        Just val ->
-                                            val.followUpDate.value
-                                    )
-                                ]
-                            ]
-                    )
-                    rows
-                )
             ]
         ]
+
+
+getRow : Row -> Html Msg
+getRow row =
+    tr
+        []
+        [ td [] [ text row.name ]
+        , td [] [ text row.assignment ]
+        , td []
+            [ DateTimePicker.datePicker (DateChanged row.id)
+                []
+                row.followUpDate.state
+                row.followUpDate.value
+            ]
+        ]
+
+
+
+-- MAIN
 
 
 main : Program Never (List Row) Msg
